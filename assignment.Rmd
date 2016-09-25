@@ -46,7 +46,7 @@ Read the training data into a data table.
 
 ```{r}
 require(data.table)
-setInternet2(TRUE)
+
 url <- "http://d396qusza40orc.cloudfront.net/predmachlearn/pml-training.csv"
 
 D <- fread(url)
@@ -90,6 +90,7 @@ D[, .N, classe]
 Split the dataset into a 60% training and 40% probing dataset.
 
 ```{r}
+library(randomForest)
 library(caret)
 seed <- as.numeric(as.Date("2014-10-26"))
 set.seed(seed)
@@ -236,12 +237,12 @@ subset(DTest, select=names(DTest)[grep("belt|[^(fore)]arm|dumbbell|forearm", nam
 
 ## Submission to Coursera
 
-Write submission files to `predictionAssignment_files/answers`.
+Write submission files to `answers`.
 
 ```{r}
 pml_write_files = function(x){
   n = length(x)
-  path <- "predictionAssignment_files/answers"
+  path <- "answers"
   for(i in 1:n){
     filename = paste0("problem_id_",i,".txt")
     write.table(x[i],file=file.path(path, filename),quote=FALSE,row.names=FALSE,col.names=FALSE)
